@@ -3,15 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
+    android:clipToPadding="false"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/flashcard_question_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:elevation="5dp"
         android:text="Who was the 44th President of the United States?"
-        android:textSize="40sp" />
+        android:textColor="@color/black"
+        android:background="@drawable/question_background"
+        android:textSize="45sp" />
 
     <TextView
         android:id="@+id/flashcard_answer_textview"
@@ -20,5 +26,52 @@
         android:layout_height="200dp"
         android:gravity="center"
         android:text="Barack Obama"
-        android:textSize="40sp" />
+        android:textColor="@color/white"
+        android:background="@drawable/answer_background"
+        android:elevation="2dp"
+        android:textSize="45sp" />
+    
+    <TextView
+        android:id="@+id/choice_1"
+        android:layout_below="@id/flashcard_question_textview"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Bill Clinton"
+        android:textColor="@color/dark_blue"
+        android:background="@color/light_yellow"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/choice_2"
+        android:layout_below="@id/choice_1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="George W. Bush"
+        android:textColor="@color/dark_blue"
+        android:background="@color/light_yellow"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/choice_correct"
+        android:layout_below="@id/choice_2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Barack Obama"
+        android:textColor="@color/dark_blue"
+        android:background="@color/light_yellow"
+        android:textSize="35sp" />
+
+    <ImageView
+        android:id="@+id/toggle_choices_visibility"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/eye_on"/>
 </RelativeLayout>
