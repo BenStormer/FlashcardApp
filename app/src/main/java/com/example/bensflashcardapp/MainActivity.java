@@ -87,9 +87,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent newCard = new Intent(MainActivity.this, AddCardActivity.class);
-                MainActivity.this.startActivity(newCard);
+                MainActivity.this.startActivityForResult(newCard, 100);
             }
         });
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) { // this 100 needs to match the 100 we used when we called startActivityForResult!
+            String question = data.getExtras().getString("question"); // 'string1' needs to match the key we used when we put the string in the Intent
+            String answer = data.getExtras().getString("answer");
+            TextView flashcardQuestion = findViewById(R.id.flashcard_question_textview);
+            TextView flashcardAnswer = findViewById(R.id.flashcard_answer_textview);
+            flashcardQuestion.setText(question);
+            flashcardAnswer.setText(answer);
+        }
+
 
     }
 }

@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/flashcard_question_textview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
@@ -23,12 +23,13 @@
         android:id="@+id/flashcard_answer_textview"
         android:visibility="invisible"
         android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
         android:layout_height="200dp"
         android:gravity="center"
+        android:elevation="5dp"
         android:text="Barack Obama"
         android:textColor="@color/white"
         android:background="@drawable/answer_background"
-        android:elevation="2dp"
         android:textSize="40sp" />
     
     <TextView
@@ -81,6 +82,6 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/add_card"/>
+        android:src="@drawable/add_button"/>
 
 </RelativeLayout>
