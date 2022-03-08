@@ -2,6 +2,7 @@ package com.example.bensflashcardapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView choice2 = findViewById(R.id.choice_2);
         TextView correctChoice = findViewById(R.id.choice_correct);
         ImageView eyeIcon = findViewById(R.id.toggle_choices_visibility);
+        ImageView addCardButton = findViewById(R.id.add_button);
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,5 +82,14 @@ public class MainActivity extends AppCompatActivity {
                 isShowingAnswers = !isShowingAnswers;
             }
         });
+
+        addCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newCard = new Intent(MainActivity.this, AddCardActivity.class);
+                MainActivity.this.startActivity(newCard);
+            }
+        });
+
     }
 }
