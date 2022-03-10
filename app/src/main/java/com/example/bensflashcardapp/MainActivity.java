@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         TextView correctChoice = findViewById(R.id.choice_correct);
         ImageView eyeIcon = findViewById(R.id.toggle_choices_visibility);
         ImageView addCardButton = findViewById(R.id.add_button);
+        ImageView editCardButton = findViewById(R.id.edit_button);
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,22 +94,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        editCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editCard = new Intent(MainActivity.this, AddCardActivity.class);
+                editCard.putExtra("initial_question", flashcardQuestion.getText().toString());
+                editCard.putExtra("initial_answer", flashcardAnswer.getText().toString());
+                MainActivity.this.startActivityForResult(editCard, 200);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK) { // this 100 needs to match the 100 we used when we called startActivityForResult!
-            String question = data.getExtras().getString("question"); // 'string1' needs to match the key we used when we put the string in the Intent
-            String answer = data.getExtras().getString("answer");
+            String question = data.getExtras().getString("new_question"); // 'string1' needs to match the key we used when we put the string in the Intent
+            String answer = data.getExtras().getString("new_answer");
             TextView flashcardQuestion = findViewById(R.id.flashcard_question_textview);
             TextView flashcardAnswer = findViewById(R.id.flashcard_answer_textview);
             flashcardQuestion.setText(question);
             flashcardAnswer.setText(answer);
+
+            Snackbar.make(findViewById(R.id.flashcard_question_textview),
+                    "Card successfully created", Snackbar.LENGTH_SHORT).show();
         }
-
-
     }
 }
