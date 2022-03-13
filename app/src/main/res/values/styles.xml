@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="edit_text_theme">
+        <item name="colorControlNormal">@color/blue_grey</item>
+        <item name="colorControlActivated">@color/ut_orange</item>
+        <item name="colorControlHighlight">@color/light_yellow</item>
+    </style>
+
+</resources>
