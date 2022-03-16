@@ -4,9 +4,11 @@
 This is a simple flashcard app that displays a question to the user. The user is able to click the question to reveal an answer. The user can also edit a card, and see error messages if they don't fill out all required fields. This app serves as Lab 2 for Codepath's Intro to Mobile App Development - Android course.
 
 ### App Walk-though
-`TODO://` Add the URL to your animated app walk-though `gif` in the image tag below. Make sure the gif actually renders and animates when viewing this README. (☝️ Remove this paragraph after after adding gif)
+Required Tasks:
+<img src="http://g.recordit.co/fCL96pL6NG.gif" width=200><br>
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+Bonus Tasks:
+<img src="http://g.recordit.co/UMqmDq8HmU.gif" width=200><br>
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
