@@ -5,9 +5,13 @@ This is a simple flashcard app that displays a question to the user. The user is
 
 ### App Walk-though
 Required Tasks:
+
+
 <img src="http://g.recordit.co/fCL96pL6NG.gif" width=200><br>
 
 Bonus Tasks:
+
+
 <img src="http://g.recordit.co/UMqmDq8HmU.gif" width=200><br>
 
 ## Required
