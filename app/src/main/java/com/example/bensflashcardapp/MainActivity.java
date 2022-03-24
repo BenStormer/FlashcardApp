@@ -10,8 +10,14 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    FlashcardDatabase flashcardDatabase;
+    List<Flashcard> allFlashcards;
+    int currentCardDisplayedIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,17 @@ public class MainActivity extends AppCompatActivity {
         ImageView eyeIcon = findViewById(R.id.toggle_choices_visibility);
         ImageView addCardButton = findViewById(R.id.add_button);
         ImageView editCardButton = findViewById(R.id.edit_button);
+        ImageView nextCardButton = findViewById(R.id.next_button);
+
+        flashcardDatabase = new FlashcardDatabase(getApplicationContext());
+        allFlashcards = flashcardDatabase.getAllCards();
+        if (allFlashcards != null && allFlashcards.size() > 0) {
+            flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+            flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+            correctChoice.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+            choice1.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+            choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+        }
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +141,30 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivityForResult(editCard, 200);
             }
         });
+
+        nextCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // advance our pointer index so we can show the next card
+                currentCardDisplayedIndex += 1;
+
+                // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
+                if (currentCardDisplayedIndex >= allFlashcards.size()) {
+                    Snackbar.make(findViewById(R.id.flashcard_question_textview),
+                            "End of deck reached, starting from beginning", Snackbar.LENGTH_SHORT).show();
+                    currentCardDisplayedIndex = 0;
+                }
+
+                // set the question and answer TextViews with data from the database
+                flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                correctChoice.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                choice1.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+                choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+            }
+        });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -135,20 +175,18 @@ public class MainActivity extends AppCompatActivity {
             String answer = data.getExtras().getString("new_answer");
             String wrong_choice1 = data.getExtras().getString("wrong_choice1");
             String wrong_choice2 = data.getExtras().getString("wrong_choice2");
-            TextView flashcardQuestion = findViewById(R.id.flashcard_question_textview);
-            TextView flashcardAnswer = findViewById(R.id.flashcard_answer_textview);
-            TextView choice1 = findViewById(R.id.choice_1);
-            TextView choice2 = findViewById(R.id.choice_2);
-            TextView correctChoice = findViewById(R.id.choice_correct);
-            flashcardQuestion.setText(question);
-            flashcardAnswer.setText(answer);
-            choice1.setText(wrong_choice1);
-            choice2.setText(wrong_choice2);
-            correctChoice.setText(answer);
-
+            ((TextView) findViewById(R.id.flashcard_question_textview)).setText(question);
+            ((TextView) findViewById(R.id.flashcard_answer_textview)).setText(answer);
+            ((TextView) findViewById(R.id.choice_correct)).setText(answer);
+            ((TextView) findViewById(R.id.choice_1)).setText(wrong_choice1);
+            ((TextView) findViewById(R.id.choice_2)).setText(wrong_choice2);
 
             Snackbar.make(findViewById(R.id.flashcard_question_textview),
                     "Card successfully created", Snackbar.LENGTH_SHORT).show();
+
+            flashcardDatabase.insertCard(new Flashcard(question, answer, wrong_choice1, wrong_choice2));
+            allFlashcards = flashcardDatabase.getAllCards();
+
         }
     }
 }

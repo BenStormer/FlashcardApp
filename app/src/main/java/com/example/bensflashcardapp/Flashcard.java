@@ -20,7 +20,7 @@ public class Flashcard {
         this.answer = answer;
     }
 
-    Flashcard(@NonNull String question, @NonNull String answer, @Nullable String wrongAnswer1,@Nullable  String wrongAnswer2) {
+    Flashcard(@NonNull String question, @NonNull String answer, @Nullable String wrongAnswer1, @Nullable  String wrongAnswer2) {
         this.uuid = UUID.randomUUID().toString();
         this.question = question;
         this.answer = answer;
