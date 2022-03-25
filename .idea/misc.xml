@@ -14,7 +14,9 @@
         <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/drawable/next_button.xml" value="0.2555" />
         <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/drawable/save_button.xml" value="0.1" />
         <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/layout/activity_add_card.xml" value="0.1" />
+        <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/layout/activity_empty_state.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/benja/AndroidStudioProjects/BensFlashcardApp/app/src/main/res/layout/empty_state.xml" value="0.20244565217391305" />
       </map>
     </option>
   </component>

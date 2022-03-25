@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = 0;
+    Flashcard cardToEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
         ImageView addCardButton = findViewById(R.id.add_button);
         ImageView editCardButton = findViewById(R.id.edit_button);
         ImageView nextCardButton = findViewById(R.id.next_button);
+        ImageView trashButton = findViewById(R.id.trash_button);
 
         flashcardDatabase = new FlashcardDatabase(getApplicationContext());
         allFlashcards = flashcardDatabase.getAllCards();
+        flashcardDatabase.insertCard(new Flashcard(flashcardQuestion.getText().toString(), flashcardAnswer.getText().toString(), choice1.getText().toString(), choice2.getText().toString()));
         if (allFlashcards != null && allFlashcards.size() > 0) {
             flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
             flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
@@ -138,13 +141,23 @@ public class MainActivity extends AppCompatActivity {
                 editCard.putExtra("initial_answer", flashcardAnswer.getText().toString());
                 editCard.putExtra("initial_wrong_choice1", choice1.getText().toString());
                 editCard.putExtra("initial_wrong_choice2", choice2.getText().toString());
+
+                while (allFlashcards.get(currentCardDisplayedIndex).getQuestion() != flashcardQuestion.getText().toString()) {
+                    currentCardDisplayedIndex += 1;
+                }
+                cardToEdit = allFlashcards.get(currentCardDisplayedIndex);
+
                 MainActivity.this.startActivityForResult(editCard, 200);
+
             }
         });
 
         nextCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (allFlashcards.size() == 0) {
+                    return;
+                }
                 // advance our pointer index so we can show the next card
                 currentCardDisplayedIndex += 1;
 
@@ -163,6 +176,33 @@ public class MainActivity extends AppCompatActivity {
                 choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
             }
         });
+
+        trashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flashcardDatabase.deleteCard(((TextView) findViewById(R.id.flashcard_question_textview)).getText().toString());
+                allFlashcards = flashcardDatabase.getAllCards();
+                if (allFlashcards.size() == 0) {
+                    flashcardQuestion.setText("There are no cards. Please add a card with the plus");
+                    flashcardAnswer.setText("There are no cards. Please add a card with the plus");
+                    correctChoice.setText("");
+                    choice1.setText("");
+                    choice2.setText("");
+
+                } else {
+                    currentCardDisplayedIndex -= 1;
+                    if (currentCardDisplayedIndex <= 0) {
+                        currentCardDisplayedIndex = 0;
+                    }
+
+                flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                correctChoice.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                choice1.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+                choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+                }
+            }
+        });
     }
 
 
@@ -170,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == 100 && resultCode == RESULT_OK ) ||
-                (requestCode == 200 && resultCode == RESULT_OK)) {
+                (requestCode == 300 && resultCode == RESULT_OK)) {
             String question = data.getExtras().getString("new_question");
             String answer = data.getExtras().getString("new_answer");
             String wrong_choice1 = data.getExtras().getString("wrong_choice1");
@@ -185,6 +225,23 @@ public class MainActivity extends AppCompatActivity {
                     "Card successfully created", Snackbar.LENGTH_SHORT).show();
 
             flashcardDatabase.insertCard(new Flashcard(question, answer, wrong_choice1, wrong_choice2));
+            allFlashcards = flashcardDatabase.getAllCards();
+
+        } else if (requestCode == 200 && resultCode == RESULT_OK) {
+            String question = data.getExtras().getString("new_question");
+            String answer = data.getExtras().getString("new_answer");
+            String wrong_choice1 = data.getExtras().getString("wrong_choice1");
+            String wrong_choice2 = data.getExtras().getString("wrong_choice2");
+            ((TextView) findViewById(R.id.flashcard_question_textview)).setText(question);
+            ((TextView) findViewById(R.id.flashcard_answer_textview)).setText(answer);
+            ((TextView) findViewById(R.id.choice_correct)).setText(answer);
+            ((TextView) findViewById(R.id.choice_1)).setText(wrong_choice1);
+            ((TextView) findViewById(R.id.choice_2)).setText(wrong_choice2);
+
+            cardToEdit.setQuestion(question);
+            cardToEdit.setAnswer(answer);
+
+            flashcardDatabase.updateCard(cardToEdit);
             allFlashcards = flashcardDatabase.getAllCards();
 
         }

@@ -101,4 +101,15 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/next_button"/>
 
+    <ImageView
+        android:id="@+id/trash_button"
+        android:layout_below="@id/flashcard_question_textview"
+        android:layout_marginTop="20dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/trash_button"/>
+
+
+
 </RelativeLayout>
