@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
 
             flashcardDatabase.insertCard(new Flashcard(question, answer, wrong_choice1, wrong_choice2));
             allFlashcards = flashcardDatabase.getAllCards();
+            currentCardDisplayedIndex = allFlashcards.size() - 1;
 
         } else if (requestCode == 200 && resultCode == RESULT_OK) {
             String question = data.getExtras().getString("new_question");
