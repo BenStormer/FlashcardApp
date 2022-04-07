@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         nextCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (allFlashcards.size() == 0) {
+                if (allFlashcards == null || allFlashcards.size() == 0) {
                     return;
                 }
                 // advance our pointer index so we can show the next card
@@ -190,13 +190,6 @@ public class MainActivity extends AppCompatActivity {
                     currentCardDisplayedIndex = 0;
                 }
 
-                // set the question and answer TextViews with data from the database
-                flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
-                flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
-                correctChoice.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
-                choice1.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
-                choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
-
 
                 final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_out);
                 final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.right_in);
@@ -205,13 +198,27 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         // this method is called when the animation first starts
-                        findViewById(R.id.flashcard_question_textview).startAnimation(leftOutAnim);
+
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         // this method is called when the animation is finished playing
-                        findViewById(R.id.flashcard_question_textview).startAnimation(rightInAnim);
+                        flashcardQuestion.startAnimation(rightInAnim);
+                        correctChoice.startAnimation(rightInAnim);
+                        choice1.startAnimation(rightInAnim);
+                        choice2.startAnimation(rightInAnim);
+
+                        // set the question and answer TextViews with data from the database
+                        Flashcard currentCard = allFlashcards.get(currentCardDisplayedIndex);
+                        flashcardQuestion.setText(currentCard.getQuestion());
+                        flashcardAnswer.setText(currentCard.getAnswer());
+                        correctChoice.setText(currentCard.getAnswer());
+                        choice1.setText(currentCard.getWrongAnswer1());
+                        choice2.setText(currentCard.getWrongAnswer2());
+
+                        flashcardQuestion.setVisibility(View.VISIBLE);
+                        flashcardAnswer.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
@@ -219,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
                         // we don't need to worry about this method
                     }
                 });
+
+                flashcardQuestion.startAnimation(leftOutAnim);
+                correctChoice.startAnimation(leftOutAnim);
+                choice1.startAnimation(leftOutAnim);
+                choice2.startAnimation(leftOutAnim);
             }
         });
 
