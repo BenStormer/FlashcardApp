@@ -2,9 +2,13 @@ package com.example.bensflashcardapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,8 +54,25 @@ public class MainActivity extends AppCompatActivity {
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // flashcardQuestion.setVisibility(View.INVISIBLE);
+                //flashcardAnswer.setVisibility(View.VISIBLE);
+
+                // get the center for the clipping circle
+                int cx = flashcardAnswer.getWidth() / 2;
+                int cy = flashcardAnswer.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(flashcardAnswer, cx, cy, 0f, finalRadius);
+
+                // hide the question and show the answer to prepare for playing the animation!
                 flashcardQuestion.setVisibility(View.INVISIBLE);
                 flashcardAnswer.setVisibility(View.VISIBLE);
+
+                anim.setDuration(750);
+                anim.start();
             }
         });
 
@@ -130,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent newCard = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(newCard, 100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
@@ -174,6 +196,29 @@ public class MainActivity extends AppCompatActivity {
                 correctChoice.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
                 choice1.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
                 choice2.setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+
+
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_out);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.right_in);
+
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // this method is called when the animation first starts
+                        findViewById(R.id.flashcard_question_textview).startAnimation(leftOutAnim);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // this method is called when the animation is finished playing
+                        findViewById(R.id.flashcard_question_textview).startAnimation(rightInAnim);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
             }
         });
 
